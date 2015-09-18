@@ -38,6 +38,8 @@ public class VerticalLayout extends AbstractLayout {
 		
 		fill();
 		
+                LayoutHelper.advanceX(margins.x);
+                LayoutHelper.advanceY(margins.y);
 		for (Element el : owner.getElements()) {
 			float padLeft = 0, padTop = 0, padRight = 0, padBottom = 0;
 			LayoutHint pad = el.getLayoutHints().get("pad");
@@ -79,14 +81,14 @@ public class VerticalLayout extends AbstractLayout {
 				} else {
 					el.setWidth(owner.getWidth()-(margins.x*2));
 				}
-				if (filly) {
-					float lHeight = 0;
-					if (lastEl != null)
-						lHeight = lastEl.getY()+lastEl.getHeight();
-					el.setHeight(owner.getHeight()-(margins.y*2)-lHeight);
-				} else {
-					el.setHeight(owner.getHeight()-(margins.y*2));
-				}
+//				if (filly) {
+//					float lHeight = 0;
+//					if (lastEl != null)
+//						lHeight = lastEl.getY()+lastEl.getHeight();
+//					el.setHeight(owner.getHeight()-(margins.y*2)-lHeight);
+//				} else {
+//					el.setHeight(owner.getHeight()-(margins.y*2));
+//				}
 				lastEl = el;
 			}
 		}

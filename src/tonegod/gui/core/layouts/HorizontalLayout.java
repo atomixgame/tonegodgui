@@ -20,12 +20,12 @@ public class HorizontalLayout extends AbstractLayout {
 	
 	@Override
 	public void resize() {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		
 	}
 
 	@Override
 	public void setOwner(Element el) {
-		throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+		owner = el;
 	}
 
 	@Override

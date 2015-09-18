@@ -11,5 +11,6 @@ import com.jme3.input.event.MouseMotionEvent;
  * @author t0neg0d
  */
 public interface MouseMovementListener {
-	void onMouseMove(MouseMotionEvent evt);
+
+    void onMouseMove(MouseMotionEvent evt);
 }

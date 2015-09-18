@@ -11,7 +11,7 @@ import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
 /**
- * 
+ *
  * @author rockfire
  */
 public class StyleLoader implements AssetLoader {

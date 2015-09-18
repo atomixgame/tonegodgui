@@ -19,8 +19,8 @@ import java.io.InputStreamReader;
 
 public class BitmapFontLoaderX implements AssetLoader {
 
-    private BitmapFont load(AssetManager assetManager, String folder, InputStream in) throws IOException{
-        MaterialDef spriteMat = 
+    private BitmapFont load(AssetManager assetManager, String folder, InputStream in) throws IOException {
+        MaterialDef spriteMat =
                 (MaterialDef) assetManager.loadAsset(new AssetKey("tonegod/gui/shaders/Unshaded.j3md"));
 
         BitmapCharacterSet charSet = new BitmapCharacterSet();
@@ -31,46 +31,46 @@ public class BitmapFontLoaderX implements AssetLoader {
         String regex = "[\\s=]+";
 
         font.setCharSet(charSet);
-		String line;
-        while ((line = reader.readLine())!=null){
+        String line;
+        while ((line = reader.readLine()) != null) {
             String[] tokens = line.split(regex);
-            if (tokens[0].equals("info")){
+            if (tokens[0].equals("info")) {
                 // Get rendered size
-                for (int i = 1; i < tokens.length; i++){
-                    if (tokens[i].equals("size")){
+                for (int i = 1; i < tokens.length; i++) {
+                    if (tokens[i].equals("size")) {
                         charSet.setRenderedSize(Integer.parseInt(tokens[i + 1]));
                     }
                 }
-            }else if (tokens[0].equals("common")){
+            } else if (tokens[0].equals("common")) {
                 // Fill out BitmapCharacterSet fields
-                for (int i = 1; i < tokens.length; i++){
+                for (int i = 1; i < tokens.length; i++) {
                     String token = tokens[i];
-                    if (token.equals("lineHeight")){
+                    if (token.equals("lineHeight")) {
                         charSet.setLineHeight(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("base")){
+                    } else if (token.equals("base")) {
                         charSet.setBase(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("scaleW")){
+                    } else if (token.equals("scaleW")) {
                         charSet.setWidth(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("scaleH")){
+                    } else if (token.equals("scaleH")) {
                         charSet.setHeight(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("pages")){
+                    } else if (token.equals("pages")) {
                         // number of texture pages
                         matPages = new Material[Integer.parseInt(tokens[i + 1])];
                         font.setPages(matPages);
                     }
                 }
-            }else if (tokens[0].equals("page")){
+            } else if (tokens[0].equals("page")) {
                 int index = -1;
                 Texture tex = null;
 
-                for (int i = 1; i < tokens.length; i++){
+                for (int i = 1; i < tokens.length; i++) {
                     String token = tokens[i];
-                    if (token.equals("id")){
+                    if (token.equals("id")) {
                         index = Integer.parseInt(tokens[i + 1]);
-                    }else if (token.equals("file")){
+                    } else if (token.equals("file")) {
                         String file = tokens[i + 1];
-                        if (file.startsWith("\"")){
-                            file = file.substring(1, file.length()-1);
+                        if (file.startsWith("\"")) {
+                            file = file.substring(1, file.length() - 1);
                         }
                         TextureKey key = new TextureKey(folder + file, true);
                         key.setGenerateMips(false);
@@ -80,52 +80,52 @@ public class BitmapFontLoaderX implements AssetLoader {
                     }
                 }
                 // set page
-                if (index >= 0 && tex != null){
+                if (index >= 0 && tex != null) {
                     Material mat = new Material(spriteMat);
                     mat.setTexture("ColorMap", tex);
                     mat.setBoolean("VertexColor", true);
                     mat.getAdditionalRenderState().setBlendMode(BlendMode.Alpha);
                     matPages[index] = mat;
                 }
-            }else if (tokens[0].equals("char")){
+            } else if (tokens[0].equals("char")) {
                 // New BitmapCharacter
                 BitmapCharacter ch = null;
-                for (int i = 1; i < tokens.length; i++){
+                for (int i = 1; i < tokens.length; i++) {
                     String token = tokens[i];
-                    if (token.equals("id")){
+                    if (token.equals("id")) {
                         int index = Integer.parseInt(tokens[i + 1]);
                         ch = new BitmapCharacter();
                         charSet.addCharacter(index, ch);
-                    }else if (token.equals("x")){
+                    } else if (token.equals("x")) {
                         ch.setX(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("y")){
+                    } else if (token.equals("y")) {
                         ch.setY(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("width")){
+                    } else if (token.equals("width")) {
                         ch.setWidth(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("height")){
+                    } else if (token.equals("height")) {
                         ch.setHeight(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("xoffset")){
+                    } else if (token.equals("xoffset")) {
                         ch.setXOffset(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("yoffset")){
+                    } else if (token.equals("yoffset")) {
                         ch.setYOffset(Integer.parseInt(tokens[i + 1]));
-                    }else if (token.equals("xadvance")){
+                    } else if (token.equals("xadvance")) {
                         ch.setXAdvance(Integer.parseInt(tokens[i + 1]));
                     } else if (token.equals("page")) {
                         ch.setPage(Integer.parseInt(tokens[i + 1]));
                     }
                 }
-            }else if (tokens[0].equals("kerning")){
+            } else if (tokens[0].equals("kerning")) {
                 // Build kerning list
                 int index = 0;
                 int second = 0;
                 int amount = 0;
 
-                for (int i = 1; i < tokens.length; i++){
-                    if (tokens[i].equals("first")){
+                for (int i = 1; i < tokens.length; i++) {
+                    if (tokens[i].equals("first")) {
                         index = Integer.parseInt(tokens[i + 1]);
-                    }else if (tokens[i].equals("second")){
+                    } else if (tokens[i].equals("second")) {
                         second = Integer.parseInt(tokens[i + 1]);
-                    }else if (tokens[i].equals("amount")){
+                    } else if (tokens[i].equals("amount")) {
                         amount = Integer.parseInt(tokens[i + 1]);
                     }
                 }
@@ -136,7 +136,7 @@ public class BitmapFontLoaderX implements AssetLoader {
         }
         return font;
     }
-    
+
     public Object load(AssetInfo info) throws IOException {
         InputStream in = null;
         try {
@@ -144,10 +144,9 @@ public class BitmapFontLoaderX implements AssetLoader {
             BitmapFont font = load(info.getManager(), info.getKey().getFolder(), in);
             return font;
         } finally {
-            if (in != null){
+            if (in != null) {
                 in.close();
             }
         }
     }
-
 }

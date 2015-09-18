@@ -12,8 +12,12 @@ import com.jme3.input.event.MouseMotionEvent;
  * @author t0neg0d
  */
 public interface MouseWheelListener {
-	void onMouseWheelPressed(MouseButtonEvent evt);
-	void onMouseWheelReleased(MouseButtonEvent evt);
-	void onMouseWheelUp(MouseMotionEvent evt);
-	void onMouseWheelDown(MouseMotionEvent evt);
+
+    void onMouseWheelPressed(MouseButtonEvent evt);
+
+    void onMouseWheelReleased(MouseButtonEvent evt);
+
+    void onMouseWheelUp(MouseMotionEvent evt);
+
+    void onMouseWheelDown(MouseMotionEvent evt);
 }

@@ -472,20 +472,20 @@ public class ScrollArea extends Element implements MouseWheelListener, TouchList
 	@Override
 	public void onFling(TouchEvent evt) {
 		if (flingEnabled && (evt.getDeltaY() > 0.2f || evt.getDeltaY() < -0.2f)) {
-			if (!screen.getAnimManager().hasGameTimer(flingTimer)) {
+			if (!screen.getActionManager().hasGameTimer(flingTimer)) {
 				flingTimer.reset(false);
 				flingDir  = (evt.getDeltaY() < 0) ? true : false;
 				flingSpeed = FastMath.abs(evt.getDeltaY());
-				screen.getAnimManager().addGameTimer(flingTimer);
+				screen.getActionManager().addGameTimer(flingTimer);
 			}
 		}
 	}
 
 	@Override
 	public void onTouchDown(TouchEvent evt) {
-		if (screen.getAnimManager().hasGameTimer(flingTimer)) {
+		if (screen.getActionManager().hasGameTimer(flingTimer)) {
 			flingTimer.endGameTimer();
-			screen.getAnimManager().removeGameTimer(flingTimer);
+			screen.getActionManager().removeGameTimer(flingTimer);
 		}
 		if (flingEnabled) {
 			touchStartY = getScrollablePosition();

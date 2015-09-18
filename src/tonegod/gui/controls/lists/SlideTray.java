@@ -426,7 +426,7 @@ public class SlideTray extends Element {
 			currentElementIndex++;
 			if (useSlideEffect) {
 				timer.reset(false);
-				screen.getAnimManager().addGameTimer(timer);
+				screen.getActionManager().addGameTimer(timer);
 			} else
 				hideShowButtons();
 		}
@@ -444,7 +444,7 @@ public class SlideTray extends Element {
 			currentElementIndex--;
 			if (useSlideEffect) {
 				timer.reset(false);
-				screen.getAnimManager().addGameTimer(timer);
+				screen.getActionManager().addGameTimer(timer);
 			} else
 				hideShowButtons();
 		}

@@ -11,6 +11,8 @@ import com.jme3.input.event.KeyInputEvent;
  * @author t0neg0d
  */
 public interface KeyboardListener {
-	void onKeyPress(KeyInputEvent evt);
-	void onKeyRelease(KeyInputEvent evt);
+
+    void onKeyPress(KeyInputEvent evt);
+
+    void onKeyRelease(KeyInputEvent evt);
 }

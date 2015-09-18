@@ -9,6 +9,8 @@ package tonegod.gui.listeners;
  * @author t0neg0d
  */
 public interface TabFocusListener {
-	void setTabFocus();
-	void resetTabFocus();
+
+    void setTabFocus();
+
+    void resetTabFocus();
 }
