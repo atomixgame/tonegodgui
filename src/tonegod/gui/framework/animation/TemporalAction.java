@@ -4,7 +4,6 @@
  */
 package tonegod.gui.framework.animation;
 
-import tonegod.gui.framework.core.Transformable;
 import tonegod.gui.framework.core.TransformableDisplay;
 
 /**

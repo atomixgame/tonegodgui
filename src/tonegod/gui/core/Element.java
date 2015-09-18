@@ -3293,12 +3293,12 @@ public class Element extends Node implements TransformableDisplay, EffectInvoker
     // New Clipping
     public void addClippingLayer(Element el) {
         ClippingDefine def = new ClippingDefine(el);
-        propigateClippingLayerAdd(def);
+        propagateClippingLayerAdd(def);
     }
 
     public void addClippingLayer(Element el, Vector4f relativeClippingBounds) {
         ClippingDefine def = new ClippingDefine(el, relativeClippingBounds);
-        propigateClippingLayerAdd(def);
+        propagateClippingLayerAdd(def);
     }
 
     public ClippingDefine getClippingDefine(Element el) {
@@ -3327,13 +3327,13 @@ public class Element extends Node implements TransformableDisplay, EffectInvoker
         }
     }
 
-    public void propigateClippingLayerAdd(ClippingDefine def) {
+    public void propagateClippingLayerAdd(ClippingDefine def) {
         if (!clippingLayers.contains(def)) {
             clippingLayers.add(def);
         }
         validateClipSettings();
         for (Element c : elementChildren.values()) {
-            c.propigateClippingLayerAdd(def);
+            c.propagateClippingLayerAdd(def);
         }
     }
 
