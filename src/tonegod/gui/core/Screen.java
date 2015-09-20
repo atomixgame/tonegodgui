@@ -107,6 +107,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private Map<Integer, Element> contactElements = new HashMap();
     private Map<Integer, Element> eventElements = new HashMap();
     private Map<Integer, Borders> eventElementResizeDirections = new HashMap();
+
     private Element eventElement = null;
     private Element targetElement = null;
     private Element keyboardElement = null;
@@ -127,6 +128,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private boolean mouseLeftPressed = false;
     private boolean mouseRightPressed = false;
     private boolean mouseWheelPressed = false;
+
     private CollisionResult lastCollision;
     private float zOrderCurrent = .5f;
     private float zOrderStepMajor = .01f;
@@ -140,12 +142,13 @@ public class Screen implements ElementManager, Control, RawInputListener {
     protected Node t0neg0dGUI = new Node("t0neg0dGUI");
     private Vector2f touchXY = new Vector2f(0, 0);
     private Vector2f mouseXY = new Vector2f(0, 0);
-    private boolean SHIFT = false;
-    private boolean CTRL = false;
-    private boolean ALT = false;
+    private boolean HOLD_SHIFT = false;
+    private boolean HOLD_CTRL = false;
+    private boolean HOLD_ALT = false;
     private boolean useCustomCursors = false;
     private boolean forceCursor = false;
     private CursorType currentCursor = CursorType.POINTER;
+
     private boolean useToolTips = false;
     private ToolTip toolTip = null;
     private float toolTipMaxWidth = 250;
@@ -163,6 +166,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private BitmapFont defaultGUIFont;
     private ModalBackground modalBackground;
     private Keyboard virtualKeys;
+
     // AnimLayer & 2D framework support
     private Map<String, AnimLayer> layers = new LinkedHashMap();
     private float layerZOrderCurrent = .4999f;
@@ -174,6 +178,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private AnimElement previousMouseFocusAnimElement = null;
     private AnimElement mouseFocusQuad = null;
     private AnimElement mouseWheelAnimElement = null;
+
     private float eventAnimOffsetX = 0;
     private float eventAnimOffsetY = 0;
     private float eventQuadOffsetX = 0;
@@ -205,6 +210,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     float orWidth, orHeight;
     boolean orDim = false;
     private ScaleUtil scaleManager;
+    boolean isAutoUpdateElements = false;
 
     /**
      * Creates a new instance of the Screen control using the default style
@@ -1164,28 +1170,28 @@ public class Screen implements ElementManager, Control, RawInputListener {
     public void onKeyEvent(KeyInputEvent evt) {
         if (evt.getKeyCode() == KeyInput.KEY_LSHIFT || evt.getKeyCode() == KeyInput.KEY_RSHIFT) {
             if (evt.isPressed()) {
-                SHIFT = true;
+                HOLD_SHIFT = true;
             } else {
-                SHIFT = false;
+                HOLD_SHIFT = false;
             }
         }
         if (evt.getKeyCode() == KeyInput.KEY_LCONTROL || evt.getKeyCode() == KeyInput.KEY_RCONTROL) {
             if (evt.isPressed()) {
-                CTRL = true;
+                HOLD_CTRL = true;
             } else {
-                CTRL = false;
+                HOLD_CTRL = false;
             }
         }
         if (evt.getKeyCode() == KeyInput.KEY_LMENU || evt.getKeyCode() == KeyInput.KEY_RMENU) {
             if (evt.isPressed()) {
-                ALT = true;
+                HOLD_ALT = true;
             } else {
-                ALT = false;
+                HOLD_ALT = false;
             }
         }
         if (evt.getKeyCode() == KeyInput.KEY_TAB && evt.isPressed()) {
             if (focusForm != null) {
-                if (!SHIFT) {
+                if (!HOLD_SHIFT) {
                     focusForm.tabNext();
                 } else {
                     focusForm.tabPrev();
@@ -2279,6 +2285,13 @@ public class Screen implements ElementManager, Control, RawInputListener {
     //<editor-fold desc="JME Control Methods">
     @Override
     public void update(float tpf) {
+        if (isAutoUpdateElements) {
+            for (Element el : getElements()) {
+                if (el.isEnabled) {
+                    el.update(tpf);
+                }
+            }
+        }
     }
 
     @Override
@@ -2887,15 +2900,15 @@ public class Screen implements ElementManager, Control, RawInputListener {
 
     //<editor-fold desc="Keyboard Key States">
     public boolean getCtrl() {
-        return this.CTRL;
+        return this.HOLD_CTRL;
     }
 
     public boolean getShift() {
-        return this.SHIFT;
+        return this.HOLD_SHIFT;
     }
 
     public boolean getAlt() {
-        return this.ALT;
+        return this.HOLD_ALT;
     }
 
     //<editor-fold desc="OS Helpers">
@@ -2993,4 +3006,11 @@ public class Screen implements ElementManager, Control, RawInputListener {
         }
     }
 
+    public void setIsAutoUpdateElements(boolean isAutoUpdateElements) {
+        this.isAutoUpdateElements = isAutoUpdateElements;
+    }
+
+    public boolean isAutoUpdateElements() {
+        return isAutoUpdateElements;
+    }
 }

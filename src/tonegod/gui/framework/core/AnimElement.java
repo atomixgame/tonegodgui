@@ -194,7 +194,7 @@ public abstract class AnimElement extends Node implements Transformable {
 
         QuadData qd = new QuadData(this, quadKey, uvs.get(regionKey), pos.x, pos.y, uvs.get(regionKey).getRegionWidth(), uvs.get(regionKey).getRegionHeight(), origin);
         qd.parent = quads.get(parentKey);
-	//	qd.setPositionX(qd.getPositionX()-qd.parent.getPositionX());
+        //	qd.setPositionX(qd.getPositionX()-qd.parent.getPositionX());
         //	qd.setPositionY(qd.getPositionY()-qd.parent.getPositionY());
         qd.setPositionZ(zOrder);
         zOrder += zOrderStepMinor;
@@ -313,10 +313,19 @@ public abstract class AnimElement extends Node implements Transformable {
     }
 
     public void update(float tpf) {
-	//	mesh.update(tpf);
+        //	mesh.update(tpf);
         //	if (mesh.updateCol)
         //		geom.updateModelBound();
+        updateActions(tpf);
+        animElementUpdate(tpf);
 
+        mesh.update(tpf);
+        if (mesh.updateCol) {
+            geom.updateModelBound();
+        }
+    }
+
+    protected void updateActions(float tpf) {
         for (TemporalAction a : actions) {
             a.act(tpf);
             if (a.getTime() >= a.getDuration() && a.getAutoRestart()) {
@@ -328,12 +337,6 @@ public abstract class AnimElement extends Node implements Transformable {
                 actions.remove(a);
                 break;
             }
-        }
-        animElementUpdate(tpf);
-
-        mesh.update(tpf);
-        if (mesh.updateCol) {
-            geom.updateModelBound();
         }
     }
 
@@ -673,7 +676,7 @@ public abstract class AnimElement extends Node implements Transformable {
     public boolean getContainsAction(TemporalAction action) {
         return actions.contains(action);
     }
-	//</editor-fold>
+    //</editor-fold>
 
     public void setElementKey(String key) {
         this.elementKey = key;

@@ -10,38 +10,40 @@ package tonegod.gui.framework.animation;
  */
 public class MoveToAction extends TemporalAction {
 
-	private float x, y;
-	
-	@Override
-	protected void begin() {
-		quad.setPosition(x,y);
-		setDuration(0);
-	}
-	
-	@Override
-	protected void update(float percent) {  }
-	
-	@Override
-	protected void end() {  }
+    private float x, y;
 
-	@Override
-	public void restart() {
-		setTime(0);
-		setComplete(false);
-		setDuration(1);
-		reset();
-	}
-	
-	public void setPosition (float x, float y) {
-		this.x = x;
-		this.y = y;
-		setDuration(1);
-	}
-	
-	@Override
-	public MoveToAction clone() {
-		MoveToAction mta = new MoveToAction();
-		mta.setPosition(x, y);
-		return mta;
-	}
+    @Override
+    protected void begin() {
+        quad.setPosition(x, y);
+        setDuration(0);
+    }
+
+    @Override
+    protected void update(float percent) {
+    }
+
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    public void restart() {
+        setTime(0);
+        setComplete(false);
+        setDuration(1);
+        reset();
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+        setDuration(1);
+    }
+
+    @Override
+    public MoveToAction clone() {
+        MoveToAction mta = new MoveToAction();
+        mta.setPosition(x, y);
+        return mta;
+    }
 }

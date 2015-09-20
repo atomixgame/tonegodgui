@@ -12,39 +12,41 @@ import tonegod.gui.framework.core.QuadData;
  */
 public class MoveTexToAction extends TemporalAction {
 
-	private float x, y;
-	
-	@Override
-	protected void begin() {
-		((QuadData)quad).setTCOffsetX(x);
-		((QuadData)quad).setTCOffsetY(y);
-		setDuration(0);
-	}
-	
-	@Override
-	protected void update(float percent) {  }
-	
-	@Override
-	protected void end() {  }
+    private float x, y;
 
-	@Override
-	public void restart() {
-		setTime(0);
-		setComplete(false);
-		setDuration(1);
-		reset();
-	}
-	
-	public void setPosition (float x, float y) {
-		this.x = x;
-		this.y = y;
-		setDuration(1);
-	}
-	
-	@Override
-	public MoveTexToAction clone() {
-		MoveTexToAction mta = new MoveTexToAction();
-		mta.setPosition(x, y);
-		return mta;
-	}
+    @Override
+    protected void begin() {
+        ((QuadData) quad).setTCOffsetX(x);
+        ((QuadData) quad).setTCOffsetY(y);
+        setDuration(0);
+    }
+
+    @Override
+    protected void update(float percent) {
+    }
+
+    @Override
+    protected void end() {
+    }
+
+    @Override
+    public void restart() {
+        setTime(0);
+        setComplete(false);
+        setDuration(1);
+        reset();
+    }
+
+    public void setPosition(float x, float y) {
+        this.x = x;
+        this.y = y;
+        setDuration(1);
+    }
+
+    @Override
+    public MoveTexToAction clone() {
+        MoveTexToAction mta = new MoveTexToAction();
+        mta.setPosition(x, y);
+        return mta;
+    }
 }

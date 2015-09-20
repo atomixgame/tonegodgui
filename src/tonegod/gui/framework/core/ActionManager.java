@@ -20,10 +20,10 @@ import tonegod.gui.framework.core.util.GameTimer;
 public class ActionManager extends AbstractControl {
 
     private Screen screen;
-    
-    private List<ActionItem> queue = new ArrayList();
-    private List<ActionItem> remove = new ArrayList();
-    private List<ActionItem> active = new ArrayList();
+
+    private List<ActionQueueEntry> queue = new ArrayList();
+    private List<ActionQueueEntry> remove = new ArrayList();
+    private List<ActionQueueEntry> active = new ArrayList();
 
     private List<GameTimer> timers = new ArrayList();
     private List<GameTimer> removeTimers = new ArrayList();
@@ -36,7 +36,7 @@ public class ActionManager extends AbstractControl {
     }
 
     public void addQueuedAction(TemporalAction action, TransformableDisplay item, float startTime) {
-        ActionItem act = new ActionItem(action, item, time + startTime);
+        ActionQueueEntry act = new ActionQueueEntry(action, item, time + startTime);
         queue.add(act);
     }
 
@@ -61,16 +61,16 @@ public class ActionManager extends AbstractControl {
     @Override
     protected void controlUpdate(float tpf) {
         time += tpf;
-        for (ActionItem item : queue) {
-            if (time >= item.startTime) {
-                if (item.item != null) {
-                    item.item.addAction(item.action);
-                    if (item.item instanceof QuadData) {
-                        ((QuadData) item.item).show();
+        for (ActionQueueEntry entry : queue) {
+            if (time >= entry.startTime) {
+                if (entry.displayItem != null) {
+                    entry.displayItem.addAction(entry.action);
+                    if (entry.displayItem instanceof QuadData) {
+                        ((QuadData) entry.displayItem).show();
                     }
                 }
-                active.add(item);
-                remove.add(item);
+                active.add(entry);
+                remove.add(entry);
             }
         }
         if (!remove.isEmpty()) {
@@ -78,9 +78,9 @@ public class ActionManager extends AbstractControl {
             remove.clear();
         }
         if (!active.isEmpty()) {
-            for (ActionItem item : active) {
-                if (!item.item.getContainsAction(item.action)) {
-                    remove.add(item);
+            for (ActionQueueEntry entry : active) {
+                if (!entry.displayItem.getContainsAction(entry.action)) {
+                    remove.add(entry);
                 }
             }
         }
@@ -120,15 +120,15 @@ public class ActionManager extends AbstractControl {
         return this.queue.isEmpty();
     }
 
-    public class ActionItem {
+    public class ActionQueueEntry {
 
         TemporalAction action;
-        TransformableDisplay item;
+        TransformableDisplay displayItem;
         float startTime;
 
-        private ActionItem(TemporalAction action, TransformableDisplay item, float startTime) {
+        private ActionQueueEntry(TemporalAction action, TransformableDisplay item, float startTime) {
             this.action = action;
-            this.item = item;
+            this.displayItem = item;
             this.startTime = startTime;
         }
     }

@@ -3776,6 +3776,31 @@ public class Element extends Node implements TransformableDisplay, EffectInvoker
 
     @Override
     public void addAction(TemporalAction action) {
+        action.setTransformable(this);
+        actions.add(action);
+    }
+
+    public void update(float tpf) {
+        if (isEnabled && getElementParent() != null) {
+            updateActions(tpf);
+        }
+    }
+
+    public void updateActions(float tpf) {
+        if (!actions.isEmpty()) {
+            for (TemporalAction a : actions) {
+                a.act(tpf);
+                if (a.getTime() >= a.getDuration() && a.getAutoRestart()) {
+                    a.restart();
+                }
+            }
+            for (TemporalAction a : actions) {
+                if (a.getTime() >= a.getDuration()) {
+                    actions.remove(a);
+                    break;
+                }
+            }
+        }
     }
 
     @Override
