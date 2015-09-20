@@ -3781,13 +3781,11 @@ public class Element extends Node implements TransformableDisplay, EffectInvoker
     }
 
     public void update(float tpf) {
-        if (isEnabled && getElementParent() != null) {
-            updateActions(tpf);
-        }
+        updateActions(tpf);
     }
 
     public void updateActions(float tpf) {
-        if (!actions.isEmpty()) {
+        if (isEnabled && (screen != null) && initialized && (getParent() != null) && !actions.isEmpty()) {
             for (TemporalAction a : actions) {
                 a.act(tpf);
                 if (a.getTime() >= a.getDuration() && a.getAutoRestart()) {

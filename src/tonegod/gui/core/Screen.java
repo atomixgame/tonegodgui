@@ -103,6 +103,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private CollisionResults results;
     private boolean useMultiTouch = false;
     private Vector2f tempElementOffset = new Vector2f();
+    
     private Map<Integer, Vector2f> elementOffsets = new HashMap();
     private Map<Integer, Element> contactElements = new HashMap();
     private Map<Integer, Element> eventElements = new HashMap();
@@ -318,36 +319,27 @@ public class Screen implements ElementManager, Control, RawInputListener {
         return in.mult(scaleManager.getGameScale());
     }
 
-    ;
-	
-	@Override
+    @Override
     public Vector3f scaleVector3f(Vector3f in) {
         return in.mult(scaleManager.getGameScale());
     }
 
-    ;
-	
-	@Override
+    @Override
     public Vector4f scaleVector4f(Vector4f in) {
         return in.mult(scaleManager.getGameScale());
     }
 
-    ;
-	
-	@Override
+    @Override
     public float scaleFontSize(float in) {
         return in * scaleManager.getFontScale();
     }
 
-    ;
-	
-	
-	/**
-	 * Return the width of the current Viewport
-	 * 
-	 * @return float width
-	 */
-	@Override
+    /**
+     * Return the width of the current Viewport
+     *
+     * @return float width
+     */
+    @Override
     public float getWidth() {
         return (orDim) ? orWidth : app.getViewPort().getCamera().getWidth();
     }
