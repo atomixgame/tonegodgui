@@ -8,24 +8,21 @@ package tonegod.gui.framework.animation;
  *
  * @author t0neg0d
  */
-public class RotateByAction extends TemporalAction {
+public class RotateByAction extends RelativeTemporalAction {
 
     private float initRot = -1;
     private float initDuration = -1;
     private float amount;
-    private float nextPercent = 0;
-    private float lastPercent = 0;
     private boolean autoReverse = false;
     private boolean initAutoReverse = false;
     private int cycles = 0;
 
     @Override
     protected void begin() {
-        lastPercent = 0;
-        nextPercent = 0;
+        super.begin();
         if (autoReverse) {
             if (initRot == -1) {
-                initRot = quad.getRotation();
+                initRot = getActor().getRotation();
             }
             if (initDuration == -1) {
                 initDuration = getDuration();
@@ -36,12 +33,10 @@ public class RotateByAction extends TemporalAction {
 
     @Override
     protected void update(float percent) {
-        nextPercent = percent - lastPercent;
-        lastPercent = percent;
-
-        quad.setRotation(quad.getRotation() + (amount * nextPercent));
-	//	if (!isReverse())	quad.rotation += amount*nextPercent;
-        //	else				quad.rotation -= amount*nextPercent;
+        super.update(percent);
+        getActor().setRotation(getActor().getRotation() + (amount * nextPercent));
+        //	if (!isReverse())	getActor().rotation += amount*nextPercent;
+        //	else				getActor().rotation -= amount*nextPercent;
     }
 
     @Override
@@ -52,7 +47,7 @@ public class RotateByAction extends TemporalAction {
             restart();
             cycles = 1;
         } else if (cycles == 1) {
-            quad.setRotation(initRot);
+            getActor().setRotation(initRot);
             amount = -amount;
             autoReverse = initAutoReverse;
             cycles = 0;

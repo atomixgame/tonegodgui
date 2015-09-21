@@ -3793,7 +3793,7 @@ public class Element extends Node implements TransformableDisplay, EffectInvoker
                 }
             }
             for (TemporalAction a : actions) {
-                if (a.getTime() >= a.getDuration()) {
+                if (a.isComplete()) {
                     actions.remove(a);
                     break;
                 }

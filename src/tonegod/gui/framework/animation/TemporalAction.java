@@ -1,27 +1,29 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package tonegod.gui.framework.animation;
 
 import tonegod.gui.framework.core.TransformableDisplay;
 
 /**
- * Based on LibGdx TemporalAction. This has been altered to work with QuadData
- * representing a single quad from a mesh of x number of quads.
+ * Based on LibGdx TemporalAction.
+ *
+ * [OLD] This has been altered to work with QuadData representing a single quad
+ * from a mesh of x number of quads.
+ *
+ * [NEW] Work with any TransformableDisplay
  *
  * @author t0neg0d
  */
-public abstract class TemporalAction implements Cloneable {
+public abstract class TemporalAction implements Cloneable, SimpleAction {
 
-    private float duration, time = 0;
-    private Interpolation interpolation;
-    private boolean reverse, complete;
+    public static final int FOREVER = Integer.MIN_VALUE;
+    protected float duration, time = 0;
+    protected Interpolation interpolation;
+    protected boolean reverse, complete;
 //	protected AnimElement batch;
     protected TransformableDisplay quad;
     protected boolean forceJmeTransform = false;
     protected boolean autoRestart = false;
-    private int runCount = 0;
+    protected int runCount = 0;
+    protected int count = 1;
 
     public TemporalAction() {
     }
@@ -37,12 +39,14 @@ public abstract class TemporalAction implements Cloneable {
 
     public void setTransformable(TransformableDisplay quad) {
         this.quad = quad;
+        setActor(quad);
     }
 
     public TransformableDisplay getTransformable() {
         return this.quad;
     }
 
+    @Override
     public boolean act(float delta) {
         if (complete) {
             return true;
@@ -51,19 +55,31 @@ public abstract class TemporalAction implements Cloneable {
             begin();
         }
         time += delta;
-        complete = time >= duration;
-        float percent;
-        if (complete) {
-            percent = 1;
+        float percent = 0;
+        if (count > 0 || count == FOREVER) { //Repeat
+            if (time >= duration) {
+                restart();
+            } else {
+                percent = time / duration;
+                if (interpolation != null) {
+                    percent = interpolation.apply(percent);
+                }
+            }
         } else {
-            percent = time / duration;
-            if (interpolation != null) {
-                percent = interpolation.apply(percent);
+            complete = time >= duration;
+            if (complete) {
+                percent = 1;
+            } else {
+                percent = time / duration;
+                if (interpolation != null) {
+                    percent = interpolation.apply(percent);
+                }
             }
         }
-        update(reverse ? 1 - percent : percent);
         if (complete) {
             end();
+        } else {
+            update(reverse ? 1 - percent : percent);
         }
         return complete;
     }
@@ -88,11 +104,22 @@ public abstract class TemporalAction implements Cloneable {
 
     abstract protected void update(float percent);
 
+    @Override
     public void finish() {
+        complete = true;
         time = duration;
     }
 
+    @Override
     public void restart() {
+        if (count == FOREVER) {
+
+        } else {
+            if (runCount > count) {
+                finish();
+                return;
+            }
+        }
         if (!reverse) {
             runCount++;
         }
@@ -100,6 +127,7 @@ public abstract class TemporalAction implements Cloneable {
         complete = false;
     }
 
+    @Override
     public void reset() {
         reverse = false;
         runCount = 0;
@@ -110,9 +138,14 @@ public abstract class TemporalAction implements Cloneable {
         this.complete = complete;
     }
 
+    public boolean isComplete() {
+        return complete;
+    }
+
     /**
      * Gets the transition time so far.
      */
+    @Override
     public float getTime() {
         return time;
     }
@@ -120,6 +153,7 @@ public abstract class TemporalAction implements Cloneable {
     /**
      * Sets the transition time so far.
      */
+    @Override
     public void setTime(float time) {
         this.time = time;
     }
@@ -156,5 +190,23 @@ public abstract class TemporalAction implements Cloneable {
 
     public void setForceJmeTransform(boolean forceJmeTransform) {
         this.forceJmeTransform = forceJmeTransform;
+    }
+
+    @Override
+    public void setActor(TransformableDisplay actor) {
+        quad = actor;
+    }
+
+    @Override
+    public TransformableDisplay getActor() {
+        return quad;
+    }
+
+    public void setCount(int count) {
+        this.count = count;
+    }
+
+    public int getCount() {
+        return count;
     }
 }

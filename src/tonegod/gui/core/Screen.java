@@ -103,7 +103,7 @@ public class Screen implements ElementManager, Control, RawInputListener {
     private CollisionResults results;
     private boolean useMultiTouch = false;
     private Vector2f tempElementOffset = new Vector2f();
-    
+
     private Map<Integer, Vector2f> elementOffsets = new HashMap();
     private Map<Integer, Element> contactElements = new HashMap();
     private Map<Integer, Element> eventElements = new HashMap();

@@ -14,7 +14,7 @@ public class MoveToAction extends TemporalAction {
 
     @Override
     protected void begin() {
-        quad.setPosition(x, y);
+        getActor().setPosition(x, y);
         setDuration(0);
     }
 
